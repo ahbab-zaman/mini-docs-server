@@ -8,7 +8,12 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // your frontend origin
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Root
@@ -17,7 +22,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", require("./routes/auth.js"));
-
 // Server listen
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
