@@ -1,39 +1,40 @@
 const express = require("express");
 const router = express.Router();
-const Document = require("../Models/document.js");
+const Document = require("../Models/document");
 
 // Create a new document
 router.post("/documents", async (req, res) => {
-  try {
-    const doc = new Document({ title: req.body.title });
-    await doc.save();
-    res.status(201).json(doc);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const doc = new Document({
+    title: req.body.title,
+    author: req.body.author,
+    createdAt: new Date(),
+  });
+  await doc.save();
+  res.json(doc);
 });
 
 // Get all documents
 router.get("/documents", async (req, res) => {
   try {
-    const docs = await Document.find();
+    const docs = await Document.find().sort({ createdAt: -1 });
     res.json(docs);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch documents." });
   }
 });
 
-// Update a document
+// Update a document title
 router.put("/documents/:id", async (req, res) => {
   try {
+    const { title } = req.body;
     const doc = await Document.findByIdAndUpdate(
       req.params.id,
-      { title: req.body.title },
+      { title },
       { new: true }
     );
     res.json(doc);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update document." });
   }
 });
 
@@ -42,8 +43,8 @@ router.delete("/documents/:id", async (req, res) => {
   try {
     await Document.findByIdAndDelete(req.params.id);
     res.json({ success: true });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete document." });
   }
 });
 

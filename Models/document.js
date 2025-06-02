@@ -1,10 +1,15 @@
 const mongoose = require("mongoose");
 
-const documentSchema = new mongoose.Schema(
+const DocumentSchema = new mongoose.Schema(
   {
-    title: { type: String },
+    title: { type: String, required: true },
+    author: { type: String, required: true },
+    imageUrl: {
+      type: String,
+      default: "/https://i.ibb.co/bMkvJGsd/google-docs.png",
+    },
   },
-  { timestamps: true }
+  { timestamps: true } // adds createdAt & updatedAt
 );
 
-module.exports = mongoose.model("document", documentSchema);
+module.exports = mongoose.model("Document", DocumentSchema);
