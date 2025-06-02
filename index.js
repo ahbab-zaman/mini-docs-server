@@ -22,6 +22,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", require("./routes/auth.js"));
+app.use("/", require("./routes/documentRoute.js"));
 // Server listen
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
