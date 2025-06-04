@@ -1,16 +1,11 @@
 const mongoose = require("mongoose");
 
-const DocumentSchema = new mongoose.Schema(
-  {
-    title: { type: String, required: true },
-    author: { type: String, required: true },
-    content: String,
-    imageUrl: {
-      type: String,
-      default: "https://i.ibb.co/bMkvJGsd/google-docs.png",
-    },
+const DocumentSchema = new mongoose.Schema({
+  _id: {
+    type: String, // Accept UUIDs
+    required: true,
   },
-  { timestamps: true } // adds createdAt & updatedAt
-);
+  content: { type: String, default: "" },
+});
 
-module.exports = mongoose.model("Document", DocumentSchema);
+module.exports = mongoose.model("document", DocumentSchema);

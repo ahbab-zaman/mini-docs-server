@@ -3,6 +3,7 @@ dotenv.config();
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./Config/db.js");
+const Document = require("./Models/Document.js"); // 👈 Import Document model
 
 connectDB();
 
@@ -30,21 +31,23 @@ app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
+// Routes
 app.use("/auth", require("./routes/auth.js"));
+app.use("/documents", require("./routes/document.js")); // 👈 Add this route
 
-// Socket.IO logic
 io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
-
-  // Join a document room to isolate updates
-  socket.on("join-doc", (docId) => {
+  socket.on("join-doc", async (docId) => {
     socket.join(docId);
-    console.log(`Socket ${socket.id} joined document room: ${docId}`);
+
+    const doc = await Document.findById(docId);
+    if (doc) {
+      socket.emit("load-document", doc); // Send initial content
+    }
   });
 
-  // Listen for content changes from a user and broadcast to others in the same room
-  socket.on("content-change", ({ docId, content }) => {
+  socket.on("content-change", async ({ docId, content }) => {
     socket.to(docId).emit("receive-changes", content);
+    await Document.findByIdAndUpdate(docId, { content });
   });
 
   socket.on("disconnect", () => {
