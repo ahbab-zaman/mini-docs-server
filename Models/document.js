@@ -4,9 +4,10 @@ const DocumentSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     author: { type: String, required: true },
+    content: String,
     imageUrl: {
       type: String,
-      default: "/https://i.ibb.co/bMkvJGsd/google-docs.png",
+      default: "https://i.ibb.co/bMkvJGsd/google-docs.png",
     },
   },
   { timestamps: true } // adds createdAt & updatedAt
