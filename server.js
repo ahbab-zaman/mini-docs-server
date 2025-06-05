@@ -3,13 +3,23 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import http from "http";
+import mongoose from "mongoose";
 import { Server } from "socket.io";
 
-import connectDB from "./config/db.js";
 import Document from "./models/documents.js";
 import authRoutes from "./routes/auth.js";
 import documentRoutes from "./routes/document.js";
 
+// Connect to MongoDB
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.error("MongoDB connection failed:", error.message);
+    process.exit(1);
+  }
+};
 connectDB();
 
 const app = express();
