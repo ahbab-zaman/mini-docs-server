@@ -1,7 +1,7 @@
 // routes/document.js
 const express = require("express");
 const router = express.Router();
-const Document = require("../Models/Document");
+const Document = require("../models/document");
 
 // routes/document.js
 router.get("/:docId", async (req, res) => {
