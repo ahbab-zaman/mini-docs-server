@@ -1,13 +1,13 @@
-const express = require("express");
+import express from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import User from "../models/user";
+
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/user.js");
 
 // POST /auth/register
-
 router.post("/register", async (req, res) => {
-  const { fullName, email, password, avatarUrl } = req.body; // accept avatarUrl
+  const { fullName, email, password, avatarUrl } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
@@ -20,7 +20,7 @@ router.post("/register", async (req, res) => {
       fullName,
       email,
       password: hashedPassword,
-      avatar: avatarUrl || null, // save avatarUrl or null if not provided
+      avatar: avatarUrl || null,
     });
 
     const token = jwt.sign(
@@ -49,6 +49,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// POST /auth/login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -131,4 +132,4 @@ router.post("/google", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

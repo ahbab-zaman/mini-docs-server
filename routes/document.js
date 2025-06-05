@@ -1,9 +1,8 @@
-// routes/document.js
-const express = require("express");
-const router = express.Router();
-const Document = require("../models/documents");
+import express from "express";
+import Document from "../models/documents.js";
 
-// routes/document.js
+const router = express.Router();
+
 router.get("/:docId", async (req, res) => {
   const { docId } = req.params;
 
@@ -34,4 +33,4 @@ router.post("/:docId", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const DocumentSchema = new mongoose.Schema({
   _id: {
@@ -8,4 +8,6 @@ const DocumentSchema = new mongoose.Schema({
   content: { type: String, default: "" },
 });
 
-module.exports = mongoose.model("document", DocumentSchema);
+const Document = mongoose.model("document", DocumentSchema);
+
+export default Document;
