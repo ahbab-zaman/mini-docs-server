@@ -46,7 +46,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("content-change", async ({ docId, content }) => {
-    socket.to(docId).emit("receive-changes", content);
+    socket.to(docId).emit("receive-changes", { content, source: socket.id });
     await Document.findByIdAndUpdate(docId, { content });
   });
 
